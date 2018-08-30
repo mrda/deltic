@@ -1,50 +1,85 @@
 <?php
 
+/**
+ * Utility functions for working with date times
+ */
 class DTCUtils
 {
+    /** The forst for our dates */
     private static $DATE_FORMAT = 'Y-m-d H:i:s';
 
-    public static function get_number_of_weekdays(\DateTime $start_dt,
-                                                  \DateTime $end_dt) {
-        $number_of_weekdays = 0;
+    /**
+     * Get the number of weekdays between two date times
+     *
+     * @param \DateTime $startDt
+     * @param \DateTime $endDt
+     * @return int
+     */
+    public static function getNumberOfWeekdays(\DateTime $startDt, \DateTime $endDt) {
+        $numberOfWeekdays = 0;
 
-        while($end_dt->diff($start_dt)->days > 0) {
-            $number_of_weekdays += DTCUtils::is_weekday($start_dt) ? 1 : 0;
-            $start_dt = $start_dt->add(new \DateInterval("P1D"));
+        while($endDt->diff($startDt)->days > 0) {
+            $numberOfWeekdays += DTCUtils::isWeekday($startDt) ? 1 : 0;
+            $startDt = $startDt->add(new \DateInterval("P1D"));
         }
 
-        return $number_of_weekdays;
+        return $numberOfWeekdays;
     }
 
-    public static function is_weekday (\DateTime $dt) {
+    /**
+     * Returns whether the the given datetime is a weekday or not
+     *
+     * @param \DateTime $dt
+     * @return bool
+     */
+    public static function isWeekday(\DateTime $dt) {
         return $dt->format('N') < 6;
     }
 
-    public static function get_datetime_as_str($dt) {
+    /**
+     * Get the given datetime as a string
+     *
+     * @param \DateTime $dt
+     * @return String
+     */
+    public static function getDateTimeAsStr(\DateTime $dt) {
         $tz = $dt->getTimeZone()->getName();
         $str = $dt->format(DTCUtils::$DATE_FORMAT);
         return "$str $tz";
     }
 
-    public static function is_valid_tz($tz) {
+    /**
+     * Returns whether the given timezone is valid with regards to the ones that are available in PHP
+     *
+     * @param String $tz
+     * @return bool
+     */
+    public static function isValidTz($tz) {
         return (in_array($tz, DateTimeZone::listIdentifiers()));
     }
 
-    public static function parse_datetime_and_tz($dt, $tz) {
-        if (! DTCUtils::is_valid_tz($tz)) {
-            display_usage_and_die("Invalid timezone: $tz");
+    /**
+     * Parse the given parameters as a datetime and timezone object
+     *
+     * @param String $dt the datetime to be parsed
+     * @param String $tz the timezone to be parsed
+     * @return DateTime the parsed datetime with the timezone configured
+     */
+    public static function parseDatetimeAndTz($dt, $tz) {
+        if (! DTCUtils::isValidTz($tz)) {
+            displayUsageAndDie("Invalid timezone: $tz");
         }
         $tz = new \DateTimeZone($tz);
 
         # Create a datetime object in the specified timezone
-        $datetime = DateTime::createFromFormat(DTCUtils::$DATE_FORMAT,
-                                               $dt, $tz);
-        if (DateTime::getLastErrors()["warning_count"] != 0 &&
-            DateTime::getLastErrors()["error_count"] != 0) {
+        $datetime = DateTime::createFromFormat(DTCUtils::$DATE_FORMAT, $dt, $tz);
+        $errors = DateTime::getLastErrors();
+
+        if ($errors["warning_count"] != 0 && $errors["error_count"] != 0) {
             return False;
-        } else {
-            return $datetime;
         }
+
+        return $datetime;
     }
 }
 ?>
