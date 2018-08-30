@@ -5,7 +5,7 @@
  */
 class DTCUtils
 {
-    /** The forst for our dates */
+    /** The format for our dates */
     private static $DATE_FORMAT = 'Y-m-d H:i:s';
 
     /**
