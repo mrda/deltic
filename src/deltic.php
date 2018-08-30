@@ -4,10 +4,18 @@
 
 require_once("DTCUtils.php");
 
-use \DateTimeZone;
+/* use \DateTimeZone; */
 
+/**
+ * The minimum number of command line arguments we require
+ */
+const MIN_ARGS = 5;
 
-function display_usage_and_die($extra=NULL) {
+/**
+ * Display the usage help text and kill the PHP process
+ * @param String $extra any extra text to print
+ */
+function displayUsageAndDie($extra=NULL) {
     $script = basename(__FILE__);
     if (! is_null($extra)) {
         print("$extra\n");
@@ -17,27 +25,31 @@ function display_usage_and_die($extra=NULL) {
 
 
 # Ensure we have the right number of command line params
-if ($argc != 5) {
-    display_usage_and_die();
+if ($argc != MIN_ARGS) {
+    displayUsageAndDie();
 }
 
 # This just needs to be set to something, we use timezones for each
 # datetimestamp, so what is specified here is irrelevant
 date_default_timezone_set("UTC");
 
-$first_dt = DTCUtils::parse_datetime_and_tz($argv[1], $argv[2]);
-$second_dt = DTCUtils::parse_datetime_and_tz($argv[3], $argv[4]);
+$firstDt = DTCUtils::parseDatetimeAndTz($argv[1], $argv[2]);
+$secondDt = DTCUtils::parseDatetimeAndTz($argv[3], $argv[4]);
 
-if ($first_dt == False or $second_dt == False) {
-    display_usage_and_die("Problem parsing datetime or timezone");
+if ($firstDt == False or $secondDt == False) {
+    displayUsageAndDie("Problem parsing datetime or timezone");
 }
 
+
 print("You provided the starting date as \"" .
-      DTCUtils::get_datetime_as_str($first_dt) . "\"\n");
+    DTCUtils::getDateTimeAsStr($firstDt) . "\"\n");
+
 print("and the ending date as \"" .
-      DTCUtils::get_datetime_as_str($second_dt) . "\"\n");
+    DTCUtils::getDateTimeAsStr($secondDt) . "\"\n");
+
 print("\nCalculating the number of weekdays...\n\n");
-$num_weekdays = DTCUtils::get_number_of_weekdays($first_dt, $second_dt);
-print("The number of weekdays is $num_weekdays\n");
+
+$numWeekdays = DTCUtils::getNumberOfWeekdays($firstDt, $secondDt);
+print("The number of weekdays is $numWeekdays\n");
 
 ?>
