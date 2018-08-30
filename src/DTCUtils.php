@@ -67,7 +67,7 @@ class DTCUtils
      */
     public static function parseDatetimeAndTz($dt, $tz) {
         if (! DTCUtils::isValidTz($tz)) {
-            displayUsageAndDie("Invalid timezone: $tz");
+            return False;
         }
         $tz = new \DateTimeZone($tz);
 
