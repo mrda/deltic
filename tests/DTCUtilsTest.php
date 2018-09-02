@@ -105,4 +105,9 @@ final class DTCUtilsTest extends TestCase {
         $this->expectException(TypeError::class);
         DTCUtils::getDateTimeAsStr(date(DTCUtilsTest::$DATE_FORMAT, mktime(00,00,00,9,2,2018))); // Required DateTime and provided String
     }
+    
+    /**
+     * Unit tests for isValidTz() function
+     */
+    // Check the isValidTz function works in order
 }
