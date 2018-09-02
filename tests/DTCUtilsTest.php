@@ -124,4 +124,32 @@ final class DTCUtilsTest extends TestCase {
         $this->assertFalse(DTCUtils::isValidTz("abcde")); // Required TimeZone and provided String
         $this->assertFalse(DTCUtils::isValidTz(1234)); // Required TimeZone and provided integer
     }
+    
+    /**
+     * Unit tests for parseDatetimeAndTz() function
+     */
+    // Check the parseDatetimeAndTz function works in order
+    // with proper Datetime and Timezone params and invalid timezones
+    public function testParseDatetimeAndTzParams() {
+        $dateSep1 = "2018-09-01 00:00:00";
+        $dateSep2 = "2018-09-02 00:00:00";
+        $timeZoneAdl = "Australia/Adelaide";        
+        $timeZonePerth = "Australia/Perth";
+
+        $this->assertEquals("2018-09-01 00:00:00", DTCUtils::parseDatetimeAndTz($dateSep1, $timeZoneAdl)->format('Y-m-d H:i:s'));
+        $this->assertEquals("2018-09-02 00:00:00", DTCUtils::parseDatetimeAndTz($dateSep2, $timeZonePerth)->format('Y-m-d H:i:s'));
+    }
+    
+    // Check the parseDatetimeAndTz function works 
+    // with invalid Datetime and Timezone params
+    public function testParseDatetimeAndTzInvalidParams() {
+        $dateSep1 = "2018-09-01 00:00:00";
+        $dateSep1I = "2018/09/01 00:00:00";
+        $timeZoneAdl = "Australia/Adelaide";
+        $timeZoneAdlInvalid = "Australia/AdelaideS";
+        
+        $this->assertFalse(DTCUtils::parseDatetimeAndTz($dateSep1, $timeZoneAdlInvalid)); // Invalid Timezone
+        $this->assertFalse(DTCUtils::parseDatetimeAndTz($dateSep1I, $timeZoneAdl)); // Invalid Date
+        $this->assertFalse(DTCUtils::parseDatetimeAndTz($dateSep1I, $timeZoneAdlInvalid)); // Invalid Date and Timezone
+    }
 }
