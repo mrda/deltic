@@ -89,4 +89,20 @@ final class DTCUtilsTest extends TestCase {
         $this->expectException(TypeError::class);
         DTCUtils::isWeekday(date(DTCUtilsTest::$DATE_FORMAT, mktime(00,00,00,9,2,2018))); // Required DateTime and provided String
     }
+    
+    /**
+     * Unit tests for getDateTimeAsStr() function
+     */
+    // Check the getDateTimeAsStr function works in order
+    public function testGetDateTimeAsStr() {
+        $dateSep2 = DateTime::createFromFormat(DTCUtilsTest::$DATE_FORMAT, date(DTCUtilsTest::$DATE_FORMAT, mktime(00,00,00,9,2,2018)));
+        $this->assertEquals('2018-09-02 00:00:00 Australia/Adelaide',  DTCUtils::getDateTimeAsStr($dateSep2));        
+    }
+    
+    // Check the invalid parameter on getDateTimeAsStr
+    // Which has not handled well and need to update this function
+    public function testGetDateTimeAsStrInvalidParams() {
+        $this->expectException(TypeError::class);
+        DTCUtils::getDateTimeAsStr(date(DTCUtilsTest::$DATE_FORMAT, mktime(00,00,00,9,2,2018))); // Required DateTime and provided String
+    }
 }
