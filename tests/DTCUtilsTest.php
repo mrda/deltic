@@ -110,4 +110,18 @@ final class DTCUtilsTest extends TestCase {
      * Unit tests for isValidTz() function
      */
     // Check the isValidTz function works in order
+    // with proper and invalid timezones
+    public function testIsValidTz() {
+        $timeZoneValid = "Australia/Adelaide";
+        $timeZoneInValid = "Australia/Ade";
+        
+        $this->assertTrue(DTCUtils::isValidTz($timeZoneValid));
+        $this->assertFalse(DTCUtils::isValidTz($timeZoneInValid));
+    }
+    
+    // Check the invalid parameter on isValidTz
+    public function testIsValidTzInvalidParams() {        
+        $this->assertFalse(DTCUtils::isValidTz("abcde")); // Required TimeZone and provided String
+        $this->assertFalse(DTCUtils::isValidTz(1234)); // Required TimeZone and provided integer
+    }
 }
