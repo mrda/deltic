@@ -16,16 +16,11 @@ class DTCUtils
      * @return int
      */
     public static function getNumberOfWeekdays(\DateTime $startDt, \DateTime $endDt) {
-        
-        echo "Starting getNumberOfWeekdays \n";
-        $count = 0;
         $numberOfWeekdays = 0;
 
         while($endDt->diff($startDt)->days > 0) {
             $numberOfWeekdays += DTCUtils::isWeekday($startDt) ? 1 : 0;
             $startDt = $startDt->add(new \DateInterval("P1D"));
-            
-            echo " Count = ". ++$count. "\n";
         }
 
         return $numberOfWeekdays;
