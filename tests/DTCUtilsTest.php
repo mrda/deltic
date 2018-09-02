@@ -89,5 +89,4 @@ final class DTCUtilsTest extends TestCase {
         $this->expectException(TypeError::class);
         DTCUtils::isWeekday(date(DTCUtilsTest::$DATE_FORMAT, mktime(00,00,00,9,2,2018))); // Required DateTime and provided String
     }
-    
 }
